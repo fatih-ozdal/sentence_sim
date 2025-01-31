@@ -1,5 +1,4 @@
 from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
 
 def main():
     sentences = [
@@ -13,7 +12,7 @@ def main():
     model_name = "all-mpnet-base-v2"
     model = load_model(model_name)
     sentence_vectors = encode_sentences(model, sentences)
-    most_similar_pair, similarity_score = find_most_similar_pair(sentence_vectors)
+    most_similar_pair, similarity_score = find_most_similar_pair(model, sentence_vectors)
     print_results(sentences, most_similar_pair, similarity_score)
 
 def load_model(model_name: str) -> SentenceTransformer:
@@ -22,14 +21,14 @@ def load_model(model_name: str) -> SentenceTransformer:
 def encode_sentences(model: SentenceTransformer, sentences: list) -> list:
     return model.encode(sentences)
 
-def find_most_similar_pair(sentence_vectors: list) -> tuple:
+def find_most_similar_pair(model: SentenceTransformer, sentence_vectors: list) -> tuple:
     max_similarity = 0
     most_similar_pair = (-1, -1)
     
     num_vectors = len(sentence_vectors)
     for i in range(num_vectors - 1):
         for j in range(i + 1, num_vectors):
-            similarity_score = cosine_similarity([sentence_vectors[i]], [sentence_vectors[j]])[0][0]
+            similarity_score = model.similarity([sentence_vectors[i]], [sentence_vectors[j]])[0][0]
             if similarity_score > max_similarity:
                 max_similarity = similarity_score
                 most_similar_pair = (i, j)
