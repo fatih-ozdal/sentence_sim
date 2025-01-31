@@ -13,7 +13,7 @@ def main():
     model_name = "all-mpnet-base-v2"
     model = load_model(model_name)
     sentence_vectors = encode_sentences(model, sentences)
-    most_similar_pair, similarity_score = find_most_similar_pair(model, sentence_vectors)
+    most_similar_pair, similarity_score = find_most_similar_pair(sentence_vectors)
     print_results(sentences, most_similar_pair, similarity_score)
 
 def load_model(model_name: str) -> SentenceTransformer:
@@ -22,7 +22,7 @@ def load_model(model_name: str) -> SentenceTransformer:
 def encode_sentences(model: SentenceTransformer, sentences: list) -> torch.tensor:
     return torch.tensor(model.encode(sentences))
 
-def find_most_similar_pair(model: SentenceTransformer, sentence_vectors: torch.tensor) -> tuple:
+def find_most_similar_pair(sentence_vectors: torch.tensor) -> tuple:
     max_similarity = 0
     most_similar_pair = (-1, -1)
     
