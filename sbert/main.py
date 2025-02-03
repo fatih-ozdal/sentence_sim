@@ -16,11 +16,14 @@ def main():
     most_similar_pair, similarity_score = find_most_similar_pair(sentence_vectors)
     print_results(sentences, most_similar_pair, similarity_score)
 
+
 def load_model(model_name: str) -> SentenceTransformer:
     return SentenceTransformer(model_name)
 
+
 def encode_sentences(model: SentenceTransformer, sentences: list) -> torch.tensor:
     return torch.tensor(model.encode(sentences))
+
 
 def find_most_similar_pair(sentence_vectors: torch.tensor) -> tuple:
     max_similarity = 0
@@ -41,12 +44,14 @@ def find_most_similar_pair(sentence_vectors: torch.tensor) -> tuple:
     
     return most_similar_pair, max_similarity
 
+
 def print_results(sentences: list, most_similar_pair: tuple, similarity_score: float) -> None :
     first_index, second_index = most_similar_pair
     print("Most similar sentences are:")
     print(f"{first_index + 1}) {sentences[first_index]}")
     print(f"{second_index + 1}) {sentences[second_index]}")
     print(f"With {100 * similarity_score:.2f}% similarity.")
+
 
 if __name__ == "__main__":
     main()
